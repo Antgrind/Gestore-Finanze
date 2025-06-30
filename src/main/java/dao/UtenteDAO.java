@@ -3,6 +3,7 @@ package dao;
 import model.Utente;
 import utils.DbConnection;
 
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,19 +78,49 @@ public class UtenteDAO {
 
 
     public boolean eliminaUtente(int idUtente) {
-        String sql = "DELETE FROM utenti WHERE id = ?";
+        String checkTurni = "SELECT COUNT(*) FROM turni WHERE id_utente = ?";
+        String checkRecords = "SELECT COUNT(*) FROM record_contabili WHERE id_utente = ?";
+        String deleteUtente = "DELETE FROM utenti WHERE id = ?";
 
-        try (Connection conn = DbConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DbConnection.getConnection()) {
+            try (
+                    PreparedStatement psTurni = conn.prepareStatement(checkTurni);
+                    PreparedStatement psRecords = conn.prepareStatement(checkRecords)
+            ) {
+                psTurni.setInt(1, idUtente);
+                ResultSet rsTurni = psTurni.executeQuery();
+                rsTurni.next();
+                int turni = rsTurni.getInt(1);
 
-            ps.setInt(1, idUtente);
-            return ps.executeUpdate() > 0;
+                psRecords.setInt(1, idUtente);
+                ResultSet rsRecords = psRecords.executeQuery();
+                rsRecords.next();
+                int records = rsRecords.getInt(1);
 
+                if (turni > 0 || records > 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Impossibile eliminare l'utente: ha ancora " +
+                                    (turni > 0 ? turni + " turno/i" : "") +
+                                    (turni > 0 && records > 0 ? " e " : "") +
+                                    (records > 0 ? records + " record contabile/i" : "") +
+                                    " registrati.",
+                            "Eliminazione non consentita",
+                            JOptionPane.WARNING_MESSAGE);
+                    return false;
+                }
+
+                try (PreparedStatement psDelete = conn.prepareStatement(deleteUtente)) {
+                    psDelete.setInt(1, idUtente);
+                    return psDelete.executeUpdate() > 0;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
+
 
 
 

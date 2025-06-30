@@ -52,6 +52,16 @@ public class GestioneTimbriView extends JPanel {
             frame.setVisible(true);
         }));
 
+        centerPanel.add(createFancyButton("Gestione Turni Utente", "icons/delete.svg", () -> {
+            JFrame frame = new JFrame("Gestione Turni Utente");
+            frame.setContentPane(new EliminaTurniUtentePanel());
+            frame.setSize(500, 400);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }));
+
+
+
         centerPanel.add(createFancyButton("Esporta Grafico", "icons/chart.svg", () -> {
             List<Object[]> dati = new TurnoDAO().getTotaleOrePerUtente();
             PdfExporter.esportaGraficoOreLavorate(dati);

@@ -46,6 +46,13 @@ public class HomeViewCapo extends JPanel {
                 parent.switchView(new GestioneTimbriView(parent, utente))
         ));
 
+        panel.add(createButton("Statistiche Utenti", "icons/stats.svg", e -> {
+            JFrame frame = new JFrame("Statistiche Utenti");
+            frame.setContentPane(new StatisticheUtentiPanel());
+            frame.setSize(600, 400);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }));
 
         panel.add(createButton("Visualizza Utenti", "icons/list.svg", e -> {
             JFrame frame = new JFrame("Utenti Registrati");

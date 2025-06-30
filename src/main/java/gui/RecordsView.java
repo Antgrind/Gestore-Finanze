@@ -30,7 +30,7 @@ public class RecordsView extends JPanel implements RecordsViewInterface {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        model = new DefaultTableModel(new Object[]{"ID", "Descrizione", "Importo", "Data", "Utente"}, 0) {
+        model = new DefaultTableModel(new Object[]{"ID", "Descrizione", "Importo", "Data", "Oggetti", "Utente"}, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -76,10 +76,12 @@ public class RecordsView extends JPanel implements RecordsViewInterface {
                     r.getDescrizione(),
                     r.getImporto(),
                     r.getData(),
+                    r.getOggetti(),
                     r.getUsername()
             });
         }
     }
+
 
     private void apriInserimento() {
         InserimentoForm form = new InserimentoForm(

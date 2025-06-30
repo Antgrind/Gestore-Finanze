@@ -15,6 +15,7 @@ public class InserimentoForm extends JDialog {
     private JTextField txtDescrizione;
     private JTextField txtImporto;
     private JTextField txtData;
+    private JTextField txtOggetti;
 
     private RecordContabileDAO dao;
     private RecordsViewInterface parentView;
@@ -45,6 +46,11 @@ public class InserimentoForm extends JDialog {
         txtData = new JTextField();
         add(txtData);
 
+        add(new JLabel("Oggetti:"));
+        txtOggetti = new JTextField();
+        add(txtOggetti);
+
+
         JButton btnSalva = new JButton("Salva", new FlatSVGIcon("icons/save.svg", 16, 16));
         btnSalva.addActionListener(e -> salvaRecord());
         add(btnSalva);
@@ -61,6 +67,7 @@ public class InserimentoForm extends JDialog {
         String desc = txtDescrizione.getText().trim();
         String impStr = txtImporto.getText().trim();
         String dataStr = txtData.getText().trim();
+        String oggetti = txtOggetti.getText().trim();
 
         if (desc.isEmpty() || impStr.isEmpty() || dataStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Compila tutti i campi.", "Errore", JOptionPane.ERROR_MESSAGE);
@@ -83,7 +90,7 @@ public class InserimentoForm extends JDialog {
             return;
         }
 
-        RecordContabile record = new RecordContabile(desc, importo, data);
+        RecordContabile record = new RecordContabile(desc, importo, data, oggetti);
         boolean ok = dao.insertRecord(record, utente.getId());
 
         if (ok) {
@@ -94,4 +101,5 @@ public class InserimentoForm extends JDialog {
             JOptionPane.showMessageDialog(this, "Errore durante l'inserimento.", "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 }

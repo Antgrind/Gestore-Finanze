@@ -31,7 +31,7 @@ public class RecordsViewScagnozzo extends JPanel implements RecordsViewInterface
         setLayout(new BorderLayout());
 
         // Table model
-        model = new DefaultTableModel(new Object[]{"ID", "Descrizione", "Importo", "Data"}, 0) {
+        model = new DefaultTableModel(new Object[]{"ID", "Descrizione", "Importo", "Data", "Oggetti"}, 0) {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
@@ -39,6 +39,7 @@ public class RecordsViewScagnozzo extends JPanel implements RecordsViewInterface
 
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
+
 
         JPanel panelBottoni = new JPanel();
 
@@ -68,10 +69,12 @@ public class RecordsViewScagnozzo extends JPanel implements RecordsViewInterface
                     r.getId(),
                     r.getDescrizione(),
                     r.getImporto(),
-                    r.getData()
+                    r.getData(),
+                    r.getOggetti()
             });
         }
     }
+
 
     private void apriInserimento() {
         InserimentoForm form = new InserimentoForm(

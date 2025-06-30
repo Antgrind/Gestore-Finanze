@@ -154,5 +154,50 @@ public class TurnoDAO {
         return lista;
     }
 
+    public boolean eliminaTurniPerUtente(String username) {
+        String sql = """
+        DELETE FROM turni
+        WHERE id_utente = (SELECT id FROM utenti WHERE username = ?)
+    """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, username);
+            return ps.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public List<Object[]> getConteggioTurniPerUtente() {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = """
+        SELECT u.username, COUNT(t.id) AS numero_turni
+        FROM utenti u
+        LEFT JOIN turni t ON u.id = t.id_utente
+        GROUP BY u.username
+        ORDER BY numero_turni DESC
+    """;
+
+        try (Connection conn = DbConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                lista.add(new Object[]{
+                        rs.getString("username"),
+                        rs.getInt("numero_turni")
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return lista;
+    }
 
 }

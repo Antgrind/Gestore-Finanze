@@ -8,23 +8,29 @@ public class RecordContabile {
     private double importo;
     private LocalDate data;
     private String username; // nome utente che ha inserito il record
+    private String oggetti;
 
-    // Costruttore usato per leggere dal DB (con id e username)
-    public RecordContabile(int id, String descrizione, double importo, LocalDate data, String username) {
+    // Aggiungi nei costruttori
+    public RecordContabile(int id, String descrizione, double importo, LocalDate data, String username, String oggetti) {
         this.id = id;
         this.descrizione = descrizione;
         this.importo = importo;
         this.data = data;
         this.username = username;
+        this.oggetti = oggetti;
     }
 
-    // Costruttore usato per inserire nuovo record (senza id e username)
-    public RecordContabile(String descrizione, double importo, LocalDate data) {
+    public RecordContabile(String descrizione, double importo, LocalDate data, String oggetti) {
         this.descrizione = descrizione;
         this.importo = importo;
         this.data = data;
+        this.oggetti = oggetti;
     }
 
+    // Getter
+    public String getOggetti() {
+        return oggetti;
+    }
     // Getters
     public int getId() {
         return id;
