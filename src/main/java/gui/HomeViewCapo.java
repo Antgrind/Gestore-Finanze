@@ -47,6 +47,13 @@ public class HomeViewCapo extends JPanel {
         ));
 
 
+        panel.add(createButton("Visualizza Utenti", "icons/list.svg", e -> {
+            JFrame frame = new JFrame("Utenti Registrati");
+            frame.setContentPane(new VisualizzaUtentiPanel());
+            frame.setSize(600, 400);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+        }));
 
 
 
